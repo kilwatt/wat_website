@@ -6,7 +6,8 @@ data := {
 	'index': fs.read_text(fs.path_of('./home.html')),
 	'js': fs.read_text(fs.path_of('./js/prism-watt.js')),
 	'style': fs.read_text(fs.path_of('./style/style.css')),
-	'lamp': fs.read_bytes(fs.path_of('./lamp.png'))
+	'lamp': fs.read_bytes(fs.path_of('./lamp.png')),
+	'404': fs.read_text(fs.path_of('./404.html'))
 }
 
 // Сервер 🧊
@@ -32,7 +33,8 @@ app.get('/index', fun(ctx) {
     ctx.result(data.get('index'))
 })
 app.on_error(404, fun(ctx) {
-    ctx.json('Not found.')
+    ctx.contentType('text/html; charset=UTF-8')
+    ctx.result(data.get('404'))
 })
 
 // Запуск сервера
