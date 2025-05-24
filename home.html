@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+<script src="/internal/js"></script>  <!-- Подключаем свой синтаксис -->
+<link rel="stylesheet" type="text/css" href="/internal/style">
+<script>
+    console.log('highlighting...')
+    console.log(Prism.languages.watt)
+    document.addEventListener("DOMContentLoaded", function () {
+      document.querySelectorAll("pre code").forEach((codeBlock) => {
+        let lines = codeBlock.textContent.split("\n"); // textContent сохраняет все переносы строк
+        
+        let numbers = lines.map((_, i) => `<div>${i + 1}</div>`).join("");
+        let content = lines
+          .map((line) => `<div>${line === "" ? "&#8203;" : line}</div>`) // &#8203; - невидимый символ, сохраняющий пустую строку
+          .join("");
+
+        let wrapper = document.createElement("div");
+        wrapper.classList.add("line-numbers");
+        wrapper.innerHTML = `<div class="numbers">${numbers}</div><div class="watt">${content}</div>`;
+
+        codeBlock.innerHTML = "";
+        codeBlock.appendChild(wrapper);
+
+        wrapper.querySelector(".watt").querySelectorAll("div").forEach((line) => {
+            Prism.highlightElement(line)
+        });  // Подсветка перед разметкой строк        
+      });
+    });
+</script>
+<body>
+    <header>
+        <nav>
+            <a href="#docs">Documentation 🏷️</a>
+            <a href="#community">Community 🔭</a>
+            <a href="#download">Download 🚀 </a>
+            <a href="#download">Github repo 🌱 </a>            
+        </nav>
+    </header>
+    <img class="emoji" src="/internal/lamp">
+    <div class="title">WATT</div>
+    <div class="slogan">Simple & powerfull</div>
+    <div class="whitespace"></div>        
+    <div class="title">CODE EXAMPLES</div>  
+    <div class="slogan">Small code examples</div>
+    <div class="examples">
+
+
+        <div class="example">
+            <div class="example-header">
+                <span class="example-title">Hello world example</span>
+                <button class="copy-button" onclick="copyToClipboard(this)">📋 Copy</button>
+            </div>
+            <div class="example-center">
+                <pre><code class="language-watt">import 'std.io'
+
+io.println("Hello, Watt!")</code></pre>
+            </div>
+        </div>
+
+
+        <div class="example">
+            <div class="example-header">
+                <span class="example-title">Types example</span>
+                <button class="copy-button" onclick="copyToClipboard(this)">📋 Copy</button>
+            </div>
+            <div class="example-center">
+            <pre class="code-container"><code class="language-watt">import 'std.io'
+
+type Counter() -> {
+    count := 0
+    fun increment() -> {
+        count = count + 1
+        io.println(count)
+    }
+}
+new Counter().increment()</code></pre>
+            </div>
+        </div>
+
+
+        <div class="example">
+            <div class="example-header">
+                <span class="example-title">Math example</span>
+                <button class="copy-button" onclick="copyToClipboard(this)">📋 Copy</button>
+            </div>
+            <div class="example-center">
+            <pre><code class="language-watt">import 'std.io'
+
+unit MathExample -> {
+    fun square(x) -> {
+        return x * x
+    }
+    fun perimeter(values) -> {
+        val := 0
+        for i in 0 to values.size() {
+            val += values.get(i)
+        }
+        return val
+    }
+}
+io.println('square 5: ' 
+    + MathExample.square(5))
+io.println('perimeter 3,4,5: ' 
+    + MathExample.perimeter([3,4,5]))</code></pre>
+            </div>
+        </div>
+
+
+
+        <div class="example">
+            <div class="example-header">
+                <span class="example-title">Unit example</span>
+                <button class="copy-button" onclick="copyToClipboard(this)">📋 Copy</button>
+            </div>
+            <div class="example-center">
+            <pre><code class="language-watt">import 'std.io'
+unit Nest -> {
+    birds := []
+    fun print() -> {
+        for i in 0 to birds.size() {
+            io.println(
+                'bird ' +
+                birds.get(i).get('name') +
+                'is flying with speed: '
+                birds.get(i).get('speed')
+            )
+        }
+    }
+    fun add_bird(name, speed) -> {
+        birds.add({'name': bird, 'speed': speed})
+    }
+}
+Nest.add_bird('Kiwy', 3.67)
+</code></pre></div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

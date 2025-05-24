@@ -1,0 +1,39 @@
+import 'net.http'
+import 'std.fs'
+
+// Словарь данных 🌱
+data := {
+	'index': fs.read_text(fs.path_of('./home.html')),
+	'js': fs.read_text(fs.path_of('./js/prism-watt.js')),
+	'style': fs.read_text(fs.path_of('./style/style.css')),
+	'lamp': fs.read_bytes(fs.path_of('./lamp.png'))
+}
+
+// Сервер 🧊
+app := new HttpServer(1080)
+
+// Файлы
+app.get('/internal/js', fun(ctx) {
+    ctx.contentType('text/js')
+    ctx.result(data.get('js'))	
+})
+app.get('/internal/style', fun(ctx) {
+    ctx.contentType('text/css')
+    ctx.result(data.get('style'))	
+})
+app.get('/internal/lamp', fun(ctx) {
+    ctx.contentType('image/png')
+    ctx.result(data.get('lamp'))	
+})
+
+// Странички 🤫
+app.get('/index', fun(ctx) {
+    ctx.contentType('text/html; charset=UTF-8')
+    ctx.result(data.get('index'))
+})
+app.on_error(404, fun(ctx) {
+    ctx.json('Not found.')
+})
+
+// Запуск сервера
+app.run()
